@@ -1,27 +1,53 @@
 import AuthComponent from "@/modules/components/auth/auth";
+import { useCreateUser } from "@/modules/graphql/mutations";
 import { Box } from "@mui/material";
+import Head from "next/head";
 import Link from "next/link";
-import { Link as MuiLink } from "@mui/material";
 
-export default function Login() {
+export default function SignUp() {
+  const { createUser, loading, error } = useCreateUser();
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        minHeight: "100vh",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <AuthComponent
-        type="signup"
-        label="Sign up"
-        onSubmit={async (credentials) => {}}
+    <>
+      <Head>
+        <title>SignUp</title>
+      </Head>
+      <Box
+        sx={{
+          display: "flex",
+          minHeight: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <Link href="/login" style={{ alignSelf: "center" }}>
-          <MuiLink>Login</MuiLink>
-        </Link>
-      </AuthComponent>
-    </Box>
+        <AuthComponent
+          type="signup"
+          label="Sign up"
+          onSubmit={async (credentials) => {
+            const { email, password, name } = credentials;
+
+            if (!name) {
+              throw new Error("Name is required");
+            }
+
+            console.log({ credentials });
+
+            createUser({
+              variables: {
+                user: {
+                  email,
+                  password,
+                  name: name,
+                },
+              },
+            });
+          }}
+        >
+          <Link href="/login" style={{ alignSelf: "center" }}>
+            Login
+          </Link>
+        </AuthComponent>
+      </Box>
+    </>
   );
 }

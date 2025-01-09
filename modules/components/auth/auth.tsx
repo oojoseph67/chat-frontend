@@ -42,6 +42,7 @@ export default function AuthComponent({
           variant="outlined"
           value={name}
           onChange={(event) => setName(event.target.value)}
+          autoComplete="off"
         />
       )}
       <TextField
@@ -50,6 +51,7 @@ export default function AuthComponent({
         variant="outlined"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
+        autoComplete="off"
       />
       <TextField
         type="password"
@@ -57,6 +59,7 @@ export default function AuthComponent({
         variant="outlined"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
+        autoComplete="off"
       />
       <Button
         variant="contained"

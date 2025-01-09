@@ -1,5 +1,7 @@
 import { QueryProvider } from "@/modules/provider/index.provider";
 import "@/styles/globals.css";
+import { apolloClient } from "@/utils/configs/apollo-client";
+import { ApolloProvider } from "@apollo/client";
 import { Container, createTheme, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 
@@ -24,12 +26,14 @@ const darkTheme = createTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Container>
-        <QueryProvider>
-          <Component {...pageProps} />
-        </QueryProvider>
-      </Container>
-    </ThemeProvider>
+    <ApolloProvider client={apolloClient}>
+      <QueryProvider>
+        <ThemeProvider theme={darkTheme}>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        </ThemeProvider>
+      </QueryProvider>
+    </ApolloProvider>
   );
 }
