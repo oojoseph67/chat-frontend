@@ -5,7 +5,11 @@ import Head from "next/head";
 import Link from "next/link";
 
 export default function SignUp() {
-  const { createUser, loading, error } = useCreateUserMutation();
+  const {
+    mutate: signUpMutateMutation,
+    error,
+    isPending,
+  } = useCreateUserMutation();
 
   return (
     <>
@@ -32,13 +36,11 @@ export default function SignUp() {
 
             console.log({ credentials });
 
-            createUser({
-              variables: {
-                user: {
-                  email,
-                  password,
-                  name: name,
-                },
+            signUpMutateMutation({
+              user: {
+                email,
+                password,
+                name,
               },
             });
           }}

@@ -5,9 +5,11 @@ import Head from "next/head";
 import Link from "next/link";
 
 export default function Login() {
-  const { login, error } = useLoginMutation();
-
-  console.log({ login, error });
+  const {
+    mutate: loginMutateMutation,
+    error,
+    isPending,
+  } = useLoginMutation();
 
   return (
     <>
@@ -28,7 +30,20 @@ export default function Login() {
           onSubmit={async (credentials) => {
             const { email, password } = credentials;
 
-            login({ email, password });
+            loginMutateMutation(
+              {
+                request: {
+                  email,
+                  password,
+                },
+              },
+              {
+                onSuccess: () => {},
+                onError: () => {
+                  console.log(error);
+                },
+              }
+            );
           }}
         >
           <Link href="/signup" style={{ alignSelf: "center" }}>
