@@ -1,11 +1,11 @@
 import AuthComponent from "@/modules/components/auth/auth";
-import { useCreateUser } from "@/modules/graphql/mutations";
+import { useCreateUserMutation } from "@/modules/graphql/mutations";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
 
 export default function SignUp() {
-  const { createUser, loading, error } = useCreateUser();
+  const { createUser, loading, error } = useCreateUserMutation();
 
   return (
     <>

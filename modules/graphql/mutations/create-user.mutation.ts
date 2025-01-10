@@ -19,7 +19,7 @@ export const createUserGQLMutation = gql`
   }
 `;
 
-export function useCreateUser() {
+export function useCreateUserMutation() {
   const [createUser, { loading, error }] = useMutation<
     UserModel,
     CreateUserInterface

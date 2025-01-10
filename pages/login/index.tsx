@@ -1,9 +1,14 @@
 import AuthComponent from "@/modules/components/auth/auth";
+import { useLoginMutation } from "@/modules/graphql/mutations";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
 
 export default function Login() {
+  const { login, error } = useLoginMutation();
+
+  console.log({ login, error });
+
   return (
     <>
       <Head>
@@ -21,7 +26,9 @@ export default function Login() {
           type="login"
           label="Login"
           onSubmit={async (credentials) => {
-            const { email, password, name } = credentials;
+            const { email, password } = credentials;
+
+            login({ email, password });
           }}
         >
           <Link href="/signup" style={{ alignSelf: "center" }}>
