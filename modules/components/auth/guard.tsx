@@ -7,7 +7,7 @@ interface GuardProps {
   children: JSX.Element;
 }
 
-const excludedRoutes = ["/login", "/signup"];
+export const excludedRoutes = ["/login", "/signup"];
 
 export default function Guard({ children }: GuardProps) {
   const router = useRouter();

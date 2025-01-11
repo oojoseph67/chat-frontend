@@ -1,17 +1,18 @@
-export type CustomGraphqlError = Error & {
-  graphQLErrors: Array<{
-    extensions: {
-      originalError: {
-        error: string;
-        message: string[];
+import { ErrorResponse } from "@apollo/client/link/error";
+
+export type CustomGraphqlError = ErrorResponse & {
+  graphQLErrors?: ReadonlyArray<{
+    message: string;
+    extensions?: {
+      originalError?: {
+        message: string;
+        statusCode: string;
       };
     };
-    message: string;
   }>;
-  response: {
-    data: {
-      statusCode: number;
-      message: string;
+  response?: {
+    data?: {
+      message?: string;
     };
   };
 };
