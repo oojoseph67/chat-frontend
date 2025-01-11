@@ -37,8 +37,6 @@ export default function SignUp() {
               throw new Error("Name is required");
             }
 
-            console.log({ credentials });
-
             signUpMutateMutation({
               user: {
                 email,

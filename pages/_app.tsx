@@ -1,3 +1,4 @@
+import Guard from "@/modules/components/auth/guard";
 import { QueryProvider } from "@/modules/provider/index.provider";
 import "@/styles/globals.css";
 import { apolloClient } from "@/utils/configs/apollo-client";
@@ -30,7 +31,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryProvider>
         <ThemeProvider theme={darkTheme}>
           <Container>
-            <Component {...pageProps} />
+            <Guard>
+              <Component {...pageProps} />
+            </Guard>
           </Container>
         </ThemeProvider>
       </QueryProvider>

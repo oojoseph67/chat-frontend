@@ -1,8 +1,10 @@
 import axios from "axios";
 import { BACKEND_URL } from "@/utils/index.utils";
 import { apolloClient } from "@/utils/configs/apollo-client";
-import { useState } from "react";
-import { useMutation as useReactMutation } from "@tanstack/react-query";
+import {
+  useQueryClient,
+  useMutation as useReactMutation,
+} from "@tanstack/react-query";
 
 interface LoginInterface {
   email: string;
@@ -37,20 +39,32 @@ interface LoginInterface {
 // }
 
 export function useLoginMutation() {
+  const queryClient = useQueryClient();
+
   return useReactMutation({
     mutationFn: async ({ request }: { request: LoginInterface }) => {
-      const res = await axios.post(`${BACKEND_URL}/auth/login`, {
-        email: request.email,
-        password: request.password,
-      });
+      const response = await axios.post(
+        `${BACKEND_URL}/auth/login`,
+        {
+          email: request.email,
+          password: request.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       await apolloClient.refetchQueries({ include: "active" });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["single-user"],
+      });
+
+      return response.data;
     },
-    onSuccess: (data, variables, context) => {
-      // your success callback here
-    },
-    onError: (error, variables, context) => {
-      // your error callback here
+    onError: (error: any) => {
+      console.error("Login error:", error);
+      throw error;
     },
   });
 }

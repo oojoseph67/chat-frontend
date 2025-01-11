@@ -8,4 +8,10 @@ export type CustomGraphqlError = Error & {
     };
     message: string;
   }>;
+  response: {
+    data: {
+      statusCode: number;
+      message: string;
+    };
+  };
 };
