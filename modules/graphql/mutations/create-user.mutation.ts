@@ -49,7 +49,9 @@ export function useCreateUserMutation() {
     onSuccess(data, variables, context) {
       apolloClient.refetchQueries({ include: "active" });
     },
-    onError(error, variables, context) {},
+    onError(error, variables, context) {
+      console.log('create user', {error})
+    },
   });
 }
 

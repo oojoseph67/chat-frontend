@@ -1,5 +1,6 @@
 import AuthComponent from "@/modules/components/auth/auth";
 import { useCreateUserMutation } from "@/modules/graphql/mutations";
+import { CustomGraphqlError } from "@/modules/types/index.types";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
@@ -27,6 +28,8 @@ export default function SignUp() {
         <AuthComponent
           type="signup"
           label="Sign up"
+          error={error as CustomGraphqlError}
+          isPending={isPending}
           onSubmit={async (credentials) => {
             const { email, password, name } = credentials;
 
