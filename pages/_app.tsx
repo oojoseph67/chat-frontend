@@ -1,9 +1,10 @@
 import Guard from "@/modules/components/auth/guard";
+import Header from "@/modules/components/header/header";
 import { QueryProvider } from "@/modules/provider/index.provider";
 import "@/styles/globals.css";
 import { apolloClient } from "@/utils/configs/apollo-client";
 import { ApolloProvider } from "@apollo/client";
-import { Container, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 
 const darkTheme = createTheme({
@@ -30,11 +31,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <ApolloProvider client={apolloClient}>
       <QueryProvider>
         <ThemeProvider theme={darkTheme}>
-          <Container>
-            <Guard>
+          <Guard>
+            <>
+              <Header />
               <Component {...pageProps} />
-            </Guard>
-          </Container>
+            </>
+          </Guard>
         </ThemeProvider>
       </QueryProvider>
     </ApolloProvider>

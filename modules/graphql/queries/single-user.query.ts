@@ -25,7 +25,5 @@ export function useSingleUserQuery() {
 
       return response.data.authenticatedUser as User;
     },
-    gcTime: 10000,
-    retry: false,
   });
 }

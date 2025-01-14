@@ -1,7 +1,7 @@
 import { useSingleUserQuery } from "@/modules/graphql/queries";
 import { CustomGraphqlError } from "@/modules/types/index.types";
 import { extractErrorMessage } from "@/utils/error";
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Container, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -53,68 +53,70 @@ export default function AuthComponent({
   }, [error]);
 
   return (
-    <Stack
-      spacing={3}
-      sx={{
-        width: "100%",
-        maxWidth: {
-          xs: "70%",
-          md: "30%",
-        },
-        margin: "0 auto",
-        padding: 3,
-      }}
-    >
-      {type === "signup" && (
+    <Container>
+      <Stack
+        spacing={3}
+        sx={{
+          width: "100%",
+          maxWidth: {
+            xs: "70%",
+            md: "30%",
+          },
+          margin: "0 auto",
+          padding: 3,
+        }}
+      >
+        {type === "signup" && (
+          <TextField
+            type="text"
+            label="Name"
+            variant="outlined"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            autoComplete="off"
+          />
+        )}
         <TextField
-          type="text"
-          label="Name"
+          type="email"
+          label="Email"
           variant="outlined"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
           autoComplete="off"
         />
-      )}
-      <TextField
-        type="email"
-        label="Email"
-        variant="outlined"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        autoComplete="off"
-      />
-      <TextField
-        type="password"
-        label="Password"
-        variant="outlined"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        autoComplete="off"
-      />
+        <TextField
+          type="password"
+          label="Password"
+          variant="outlined"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          autoComplete="off"
+        />
 
-      <Stack spacing={1}>
-        {actualErrorMessage &&
-          (Array.isArray(actualErrorMessage) ? (
-            actualErrorMessage.map((message, index) => (
-              <p key={index} className="text-red-600 m-0 text-sm font-normal">
-                • {message}
+        <Stack spacing={1}>
+          {actualErrorMessage &&
+            (Array.isArray(actualErrorMessage) ? (
+              actualErrorMessage.map((message, index) => (
+                <p key={index} className="text-red-600 m-0 text-sm font-normal">
+                  • {message}
+                </p>
+              ))
+            ) : (
+              <p className="text-red-600 m-0 text-sm font-normal">
+                • {actualErrorMessage}
               </p>
-            ))
-          ) : (
-            <p className="text-red-600 m-0 text-sm font-normal">
-              • {actualErrorMessage}
-            </p>
-          ))}
-      </Stack>
+            ))}
+        </Stack>
 
-      <Button
-        variant="contained"
-        onClick={() => onSubmit({ email, password, name })}
-        disabled={isPending}
-      >
-        {label}
-      </Button>
-      {children}
-    </Stack>
+        <Button
+          variant="contained"
+          onClick={() => onSubmit({ email, password, name })}
+          disabled={isPending}
+        >
+          {label}
+        </Button>
+        {children}
+      </Stack>
+    </Container>
   );
 }
