@@ -1,7 +1,9 @@
+import { useSingleUserQuery } from "@/modules/graphql/queries";
 import { CustomGraphqlError } from "@/modules/types/index.types";
 import { extractErrorMessage } from "@/utils/error";
 import { Button, Stack, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 interface AuthComponentProps {
   type: "signup" | "login";
@@ -24,6 +26,7 @@ export default function AuthComponent({
   error,
   isPending,
 }: AuthComponentProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -32,6 +35,22 @@ export default function AuthComponent({
 
   // const errorMessages =
   //   error?.graphQLErrors[0].extensions.originalError.message;
+
+  const { data: user, isFetched } = useSingleUserQuery();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, isFetched]);
+
+  useEffect(() => {
+    if (error) {
+      setEmail("");
+      setPassword("");
+      setName("");
+    }
+  }, [error]);
 
   return (
     <Stack
@@ -74,8 +93,8 @@ export default function AuthComponent({
       />
 
       <Stack spacing={1}>
-        {actualErrorMessage && (
-          Array.isArray(actualErrorMessage) ? (
+        {actualErrorMessage &&
+          (Array.isArray(actualErrorMessage) ? (
             actualErrorMessage.map((message, index) => (
               <p key={index} className="text-red-600 m-0 text-sm font-normal">
                 • {message}
@@ -85,8 +104,7 @@ export default function AuthComponent({
             <p className="text-red-600 m-0 text-sm font-normal">
               • {actualErrorMessage}
             </p>
-          )
-        )}
+          ))}
       </Stack>
 
       <Button

@@ -1,6 +1,8 @@
 import AuthComponent from "@/modules/components/auth/auth";
-import { useCreateUserMutation } from "@/modules/graphql/mutations";
-import { CustomGraphqlError } from "@/modules/types/index.types";
+import {
+  useCreateUserMutation,
+  useLoginMutation,
+} from "@/modules/graphql/mutations";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
@@ -11,6 +13,12 @@ export default function SignUp() {
     error,
     isPending,
   } = useCreateUserMutation();
+
+  const {
+    mutate: loginMutateMutation,
+    error: loginError,
+    isPending: isPendingLogin,
+  } = useLoginMutation();
 
   return (
     <>
@@ -28,8 +36,8 @@ export default function SignUp() {
         <AuthComponent
           type="signup"
           label="Sign up"
-          error={error as CustomGraphqlError}
-          isPending={isPending}
+          error={error || loginError}
+          isPending={isPending || isPendingLogin}
           onSubmit={async (credentials) => {
             const { email, password, name } = credentials;
 
@@ -37,13 +45,25 @@ export default function SignUp() {
               throw new Error("Name is required");
             }
 
-            signUpMutateMutation({
-              user: {
-                email,
-                password,
-                name,
+            signUpMutateMutation(
+              {
+                user: {
+                  email,
+                  password,
+                  name,
+                },
               },
-            });
+              {
+                onSuccess(data, variables, context) {
+                  loginMutateMutation({
+                    request: {
+                      email,
+                      password,
+                    },
+                  });
+                },
+              }
+            );
           }}
         >
           <Link href="/login" style={{ alignSelf: "center" }}>

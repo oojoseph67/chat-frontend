@@ -1,7 +1,6 @@
 import { excludedRoutes } from "@/modules/components/auth/guard";
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { useRouter } from "next/router";
 
 if (!process.env.NEXT_PUBLIC_GRAPHQL_URL) {
   throw new Error("Missing NEXT_PUBLIC_GRAPHQL_URL environment variable");
@@ -14,9 +13,9 @@ const logoutLink = onError((error) => {
       401
   ) {
     if (!excludedRoutes.includes(window.location.pathname)) {
-      // window.location.href = '/login'
-      const router = useRouter();
-      router.push("/login");
+      window.location.href = '/login'
+      // const router = useRouter();
+      // router.push("/login");
 
       apolloClient.resetStore();
     }
