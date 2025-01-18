@@ -4,68 +4,53 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
+import ToastSnackbar from "../components/toast(snackbar)/toast-snackbat";
 
 type QueryProviderProps = {
   children: ReactNode;
 };
 
 export function QueryProvider({ children }: QueryProviderProps) {
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<
+    "success" | "error" | "info" | "warning"
+  >("info");
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: { queries: { retry: 0 } },
         mutationCache: new MutationCache({
-          onMutate: () => {
-            // toast.loading("Transaction In Process...", { duration: 30000 });
-            console.log("Loading");
-          },
-          onSuccess: (_data, _variables, _context, mutation) => {
-            console.log(
-              "query provider success",
-              _data,
-              _variables,
-              _context,
-              mutation
-            );
-
-            // const successMessage = mutation?.meta?.successMessage as {
-            //   title?: string;
-            //   description: string;
-            // };
-
-            // toast.success(
-            //   successMessage
-            //     ? successMessage.description
-            //     : "Transaction was Successful",
-            //   {
-            //     duration: 5000,
-            //   }
-            // );
-          },
           onError: (error, _variables, _context, mutation) => {
             console.log("query provider error: ", error);
 
-            // const errorMessage = mutation?.meta?.errorMessage as {
-            //   title?: string;
-            //   description: string;
-            // };
+            const errorMessage = mutation?.meta?.errorMessage as {
+              title?: string;
+              description: string;
+            };
 
-            // console.log({ errorMessage, error })
-
-            // toast.error(
-            //   errorMessage
-            //     ? `${errorMessage.description} ${error.message}`
-            //     : error.message,
-            //   {
-            //     duration: 5000,
-            //   }
-            // );
+            setToastMessage(
+              errorMessage
+                ? `${errorMessage.description}: ${error.message}`
+                : error.message
+            );
+            setToastType("error");
+            setToastOpen(true);
           },
         }),
       })
   );
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <ToastSnackbar
+        type={toastType}
+        message={toastMessage}
+        open={toastOpen}
+        onClose={() => setToastOpen(false)}
+      />
+    </>
   );
 }

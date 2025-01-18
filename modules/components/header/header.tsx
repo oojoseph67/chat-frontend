@@ -57,8 +57,6 @@ export default function Header() {
     }
   }, [isFetched, user]);
 
-  console.log({ currentPages });
-
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );

@@ -50,7 +50,12 @@ export function useCreateUserMutation() {
       apolloClient.refetchQueries({ include: "active" });
     },
     onError(error, variables, context) {
-      console.log('create user', {error})
+      console.log("create user", { error });
+    },
+    meta: {
+      errorMessage: {
+        description: "Error creating user",
+      },
     },
   });
 }

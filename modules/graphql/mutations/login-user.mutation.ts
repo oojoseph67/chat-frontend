@@ -62,9 +62,10 @@ export function useLoginMutation() {
 
       return response.data;
     },
-    onError: (error: any) => {
-      console.error("Login error:", error);
-      throw error;
+    meta: {
+      errorMessage: {
+        description: "Error logging user",
+      },
     },
   });
 }
