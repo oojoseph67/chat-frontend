@@ -1,1 +1,1 @@
-export * from './user.gql'
+export * from './user.mutation.gql'

@@ -1,1 +1,1 @@
-export * from './single-user.query'
+export * from './user.query'
