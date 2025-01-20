@@ -1,3 +1,4 @@
+import { useCreateChatMutation } from "@/modules/graphql/mutations";
 import { Search } from "@mui/icons-material";
 import {
   Box,
@@ -23,6 +24,33 @@ export default function ChatListAdd({
   handleClose: () => void;
 }) {
   const [isPrivate, setIsPrivate] = useState(true);
+  const [name, setName] = useState("");
+
+  const {
+    mutate: createChatMutate,
+    isPending: createChatIsPending,
+    error: createChatError,
+  } = useCreateChatMutation();
+
+  const handleCreateChat = () => {
+    createChatMutate(
+      {
+        chat: {
+          isPrivate,
+          name,
+          userIds: [],
+        },
+      },
+      {
+        onSuccess() {
+          handleClose();
+        },
+        onError() {
+          handleClose();
+        },
+      }
+    );
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -41,7 +69,7 @@ export default function ChatListAdd({
       >
         <Stack spacing={3}>
           <Typography variant="h6" component="h2">
-            Add Chat
+            Create Chat
           </Typography>
 
           <FormGroup>
@@ -60,19 +88,30 @@ export default function ChatListAdd({
             />
           </FormGroup>
 
-          {isPrivate ? (
+          <TextField
+            label="Name"
+            autoComplete="off"
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
+
+          {isPrivate && (
             <Paper sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}>
               <InputBase placeholder="Search Users" sx={{ ml: 1, flex: 1 }} />
               <IconButton sx={{ p: "10px" }}>
                 <Search />
               </IconButton>
             </Paper>
-          ) : (
-            <TextField label="Name" />
           )}
 
-          <Button variant="outlined" fullWidth>
-            Save
+          <Button
+            onClick={handleCreateChat}
+            disabled={createChatIsPending}
+            variant="outlined"
+            fullWidth
+          >
+            Create Chat
           </Button>
         </Stack>
       </Box>

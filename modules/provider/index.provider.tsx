@@ -22,6 +22,18 @@ export function QueryProvider({ children }: QueryProviderProps) {
       new QueryClient({
         defaultOptions: { queries: { retry: 0 } },
         mutationCache: new MutationCache({
+          onSuccess(data, variables, context, mutation) {
+            const successMessage = mutation?.meta?.successMessage as {
+              title?: string;
+              description: string;
+            };
+
+            setToastMessage(
+              successMessage ? `${successMessage.description}` : "Success"
+            );
+            setToastType("success");
+            setToastOpen(true);
+          },
           onError: (error, _variables, _context, mutation) => {
             console.log("query provider error: ", error);
 

@@ -11,8 +11,6 @@ export function useSingleUserQuery() {
         query: GetAucthecicatedUser,
       });
 
-      console.log({ response });
-
       return response.data.authenticatedUser as User;
     },
   });

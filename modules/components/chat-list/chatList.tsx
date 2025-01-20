@@ -1,9 +1,10 @@
 import List from "@mui/material/List";
 import ChatListItem from "./component/chat-list-item";
-import { Divider, Stack } from "@mui/material";
+import { Divider, Stack, Box, CircularProgress } from "@mui/material";
 import ChatListHeader from "./component/chat-list-header";
 import { useState } from "react";
 import ChatListAdd from "./component/chat-list-add";
+import { useGetAllChatsQuery } from "@/modules/graphql/queries";
 
 const dummyList = [
   {
@@ -36,6 +37,11 @@ const dummyList = [
 export default function ChatList() {
   const [addChatListModal, setAddChatListModal] = useState(false);
 
+  const { data: allChats, isLoading: allChatsIsLoading } =
+    useGetAllChatsQuery();
+
+  console.log({ allChats });
+
   return (
     <>
       <Stack>
@@ -54,16 +60,21 @@ export default function ChatList() {
             overflow: "auto",
           }}
         >
-          {dummyList.map((list, index) => {
-            return (
+          {allChatsIsLoading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            dummyList?.map((list, index) => (
               <ChatListItem
                 key={index}
-                header={list.header}
+                header={list.name}
                 name={list.name}
-                snippet={list.snippet}
+                snippet={"Send message"}
+                // snippet={list.snippet}
               />
-            );
-          })}
+            ))
+          )}
         </List>
       </Stack>
 
