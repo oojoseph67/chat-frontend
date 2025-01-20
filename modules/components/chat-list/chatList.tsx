@@ -65,7 +65,7 @@ export default function ChatList() {
               <CircularProgress />
             </Box>
           ) : (
-            dummyList?.map((list, index) => (
+            allChats?.map((list, index) => (
               <ChatListItem
                 key={index}
                 header={list.name}

@@ -15,5 +15,6 @@ export function useGetAllChatsQuery() {
 
       return data;
     },
+    refetchInterval: 50000
   });
 }
