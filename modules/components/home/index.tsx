@@ -1,15 +1,18 @@
-import { Grid2, Grid, Container } from "@mui/material";
-import ChatList from "../chat-list/chatList";
+import { Stack, Typography } from "@mui/material";
 
 export default function HomeComponent() {
   return (
-    <Grid2 container>
-      <Grid item md={3}>
-        <ChatList />
-      </Grid>
-      <Grid item md={9}>
-        <Container>Home</Container>
-      </Grid>
-    </Grid2>
+    <Stack 
+      sx={{ 
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 2
+      }}
+    >
+      <Typography variant="h6" color="text.secondary">
+        Select a chat or create a new one to get started
+      </Typography>
+    </Stack>
   );
 }

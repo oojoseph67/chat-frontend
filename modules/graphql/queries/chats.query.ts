@@ -1,6 +1,6 @@
 import { apolloClient } from "@/utils/configs/apollo-client";
 import { useQuery as useReactQuery } from "@tanstack/react-query";
-import { GetAllChats } from "./gql";
+import { GetAllChats, GetChatById } from "./gql";
 import { ChatResponse } from "../types/types.graphql";
 
 export function useGetAllChatsQuery() {
@@ -15,6 +15,27 @@ export function useGetAllChatsQuery() {
 
       return data;
     },
-    refetchInterval: 50000
+    refetchInterval: 50000,
+  });
+}
+
+export function useGetChatById({ chatId }: { chatId: string }) {
+  return useReactQuery({
+    queryKey: ["chat-by-id"],
+    queryFn: async () => {
+      const response = await apolloClient.query({
+        query: GetChatById,
+        variables: {
+          // id: "678de759d0bed772fc5878d2",
+          id: chatId,
+        },
+      });
+
+      const data = response.data.getChatById as ChatResponse;
+
+      return data;
+    },
+    enabled: !!chatId,
+    refetchInterval: 5000,
   });
 }

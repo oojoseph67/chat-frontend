@@ -1,10 +1,10 @@
-import HomeComponent from "@/modules/components/home";
+import Chat from "@/modules/components/chat/chat";
 import MainLayout from "@/modules/components/layout/MainLayout";
 
-export default function Home() {
+export default function ChatPage() {
   return (
     <MainLayout>
-      <HomeComponent />
+      <Chat />
     </MainLayout>
   );
 }

@@ -6,41 +6,11 @@ import { useState } from "react";
 import ChatListAdd from "./component/chat-list-add";
 import { useGetAllChatsQuery } from "@/modules/graphql/queries";
 
-const dummyList = [
-  {
-    header: "Project Update",
-    name: "Sarah Johnson",
-    snippet: "Hey team, Ive pushed the latest changes to...",
-  },
-  {
-    header: "Meeting Notes",
-    name: "David Chen",
-    snippet: "Heres a summary of todays client meeting...",
-  },
-  {
-    header: "Bug Fix #123",
-    name: "Emma Williams",
-    snippet: "I found the issue with the login component...",
-  },
-  {
-    header: "Weekend Plans",
-    name: "Michael Brown",
-    snippet: "Anyone up for a team lunch this Saturday?",
-  },
-  {
-    header: "New Feature Request",
-    name: "Lisa Anderson",
-    snippet: "The client would like to add a new dashboard...",
-  },
-];
-
 export default function ChatList() {
   const [addChatListModal, setAddChatListModal] = useState(false);
 
   const { data: allChats, isLoading: allChatsIsLoading } =
     useGetAllChatsQuery();
-
-  console.log({ allChats });
 
   return (
     <>
@@ -71,6 +41,7 @@ export default function ChatList() {
                 header={list.name}
                 name={list.name}
                 snippet={"Send message"}
+                chatId={list._id}
                 // snippet={list.snippet}
               />
             ))

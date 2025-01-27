@@ -7,7 +7,19 @@ export const GetAllChats = gql`
       isPrivate
       userIds
       name
-      chatCreatorId,
+      chatCreatorId
+    }
+  }
+`;
+
+export const GetChatById = gql`
+  query GetChatById($id: String!) {
+    getChatById(id: $id) {
+      _id
+      chatCreatorId
+      isPrivate
+      userIds
+      name
     }
   }
 `;

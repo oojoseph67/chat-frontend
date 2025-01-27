@@ -23,8 +23,9 @@ export default function ChatListAdd({
   open: boolean;
   handleClose: () => void;
 }) {
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const {
     mutate: createChatMutate,
@@ -33,6 +34,15 @@ export default function ChatListAdd({
   } = useCreateChatMutation();
 
   const handleCreateChat = () => {
+    console.log("before");
+
+    if (!name) {
+      setError("Name is required");
+      return;
+    }
+
+    console.log("after");
+
     createChatMutate(
       {
         chat: {
@@ -53,7 +63,15 @@ export default function ChatListAdd({
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal
+      open={open}
+      onClose={() => {
+        setError("");
+        setName("");
+        setIsPrivate(false)
+        handleClose();
+      }}
+    >
       <Box
         sx={{
           position: "absolute" as "absolute",
@@ -77,7 +95,7 @@ export default function ChatListAdd({
               label="Private chat"
               control={
                 <Switch
-                  defaultChecked
+                  // defaultChecked
                   value={isPrivate}
                   onChange={(event) => {
                     const clicked = event.target.checked;
@@ -94,6 +112,9 @@ export default function ChatListAdd({
             onChange={(event) => {
               setName(event.target.value);
             }}
+            required
+            error={!!error}
+            helperText={error}
           />
 
           {isPrivate && (
