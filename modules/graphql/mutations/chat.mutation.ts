@@ -4,10 +4,10 @@ import {
   useMutation as useReactMutation,
 } from "@tanstack/react-query";
 import { ChatResponse, CreateChatInterface } from "../types/types.graphql";
-import { createChatGQLMutation } from "../gql";
+import { createChatGQLMutation } from "./gql";
 import { gql } from "@apollo/client";
 
-const ChatFragment = gql`
+export const ChatFragment = gql`
   fragment ChatFragment on getAllChats {
     _id
     isPrivate

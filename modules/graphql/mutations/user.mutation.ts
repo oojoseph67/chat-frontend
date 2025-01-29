@@ -8,7 +8,7 @@ import axios from "axios";
 import { BACKEND_URL } from "@/utils/index.utils";
 import { useRouter } from "next/router";
 import { CreateUserInterface, LoginInterface } from "../types/types.graphql";
-import { createUserGQLMutation } from "../gql";
+import { createUserGQLMutation } from "./gql";
 
 // export function useCreateUserMutation() {
 //   const [createUser, { loading, error }] = useMutation<
