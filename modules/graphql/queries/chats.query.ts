@@ -19,7 +19,7 @@ export function useGetAllChatsQuery() {
   });
 }
 
-export function useGetChatById({ chatId }: { chatId: string }) {
+export function useGetChatByIdQuery({ chatId }: { chatId: string }) {
   return useReactQuery({
     queryKey: ["chat-by-id"],
     queryFn: async () => {

@@ -9,38 +9,35 @@ import {
   MessageResponse,
 } from "../types/types.graphql";
 
+interface CreateMessageResponse {
+  createMessage: {
+    _id: string;
+    content: string;
+    createdAt: string;
+    userId: string;
+    chatId: string;
+  };
+}
+
 export function useCreateMessageMutation() {
   const queryClient = useQueryClient();
-
+  
   return useReactMutation({
     mutationFn: async (variables: CreateMessageInterface) => {
-
-        console.log({variables})
-
-      const response = await apolloClient.mutate<{
-        createMessage: MessageResponse;
-      }>({
+      const response = await apolloClient.mutate<CreateMessageResponse>({
         mutation: createMessageGQLMutation,
-        variables: {
-          message: variables.message,
-        },
+        variables: { message: variables.message },
       });
-
-      return response.data;
+      return response.data!;
     },
-    onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({
-        queryKey: ["chat-message"],
-      });
-    },
-    onError(error, variables, context) {},
-    meta: {
-      successMessage: {
-        description: "Message sent successfully ",
-      },
-      errorMessage: {
-        description: "Error sending message",
-      },
+    onSuccess: (data, variables) => {
+      // Optimistically update the messages list
+      queryClient.setQueryData<MessageResponse>(
+        ["messages", variables.message.chatId],
+        (old) => ({
+          messages: [...(old?.messages || []), data.createMessage]
+        })
+      );
     },
   });
 }

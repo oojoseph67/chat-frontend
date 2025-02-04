@@ -1,5 +1,8 @@
 import { useCreateMessageMutation } from "@/modules/graphql/mutations";
-import { useGetChatById } from "@/modules/graphql/queries";
+import {
+  useGetChatByIdQuery,
+  useGetMessageQuery,
+} from "@/modules/graphql/queries";
 import { Send as SendIcon } from "@mui/icons-material";
 import {
   Divider,
@@ -18,7 +21,14 @@ export default function Chat() {
   const router = useRouter();
   const { chatId } = router.query;
 
-  const { data: chatById } = useGetChatById({ chatId: chatId as string });
+  const { data: chatById } = useGetChatByIdQuery({ chatId: chatId as string });
+
+  console.log({ chatById });
+  const { data: chatMessages } = useGetMessageQuery({
+    chatId: chatById?._id!,
+  });
+
+  console.log({ chatMessages });
 
   const [messageContent, setMessageContent] = useState("");
 
@@ -65,6 +75,13 @@ export default function Chat() {
 
       <Box sx={{ flexGrow: 1, overflow: "auto", px: 2 }}>
         {/* Chat messages will go here */}
+        {chatMessages?.messages.map((message) => {
+          return (
+            <p>
+              <>{message.content}</>
+            </p>
+          );
+        })}
       </Box>
 
       <Box sx={{ px: 2, pb: 2 }}>

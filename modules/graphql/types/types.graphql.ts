@@ -35,9 +35,11 @@ export interface CreateMessageInterface {
 }
 
 export interface MessageResponse {
-  _id: string;
-  content: string;
-  createdAt: string;
-  userId: string;
-  chatId: string;
+  messages: {
+    _id: string;
+    content: string;
+    createdAt: string;
+    userId: string;
+    chatId: string;
+  }[];
 }
